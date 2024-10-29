@@ -21,6 +21,7 @@ class Parkseat(Base):
 
     carnum = Column(String(10), primary_key=True, nullable=False)
     barrier = Column(String(5), nullable=False, default='0')
+    parknum = Column(Integer, nullable=False)
 
 # 수정 필요
 class Payment(Base):

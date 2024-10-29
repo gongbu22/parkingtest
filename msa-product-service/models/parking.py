@@ -1,26 +1,10 @@
+
 from datetime import datetime
 
-from sqlalchemy import Column, Integer, String, Boolean, DateTime, ForeignKey, Float
+from sqlalchemy import Column, String, Integer, DateTime, ForeignKey, Float
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
-
-
-# class Parking(Base):
-#     __tablename__ = 'parking'
-#
-#     pno = Column(Integer, primary_key=True, autoincrement=True, index=True)
-#     carnum = Column(String(50), nullable=False)
-#     barrier = Column(Boolean, nullable=False)
-#     intime = Column(DateTime, nullable=True)
-#     outtime = Column(DateTime, nullable=True)
-#
-# class Parkseat(Base):
-#     __tablename__ = 'parkseat'
-#
-#     # id = Column(Integer, primary_key=True, autoincrement=True, index=True)
-#     carnum = Column(String(50), nullable=False)  # 차량 번호
-#     barrier = Column(Boolean, nullable=False)    # 장애인 여부 (True: 장애인, False: 일반 차량)
 
 class Parking(Base):
     __tablename__ = 'parking'
@@ -37,6 +21,7 @@ class Parkseat(Base):
 
     carnum = Column(String(10), primary_key=True, nullable=False)
     barrier = Column(String(5), nullable=False, default='0')
+    parknum = Column(Integer, nullable=False)
 
 # 수정 필요
 class Payment(Base):

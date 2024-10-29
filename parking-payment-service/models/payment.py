@@ -1,18 +1,3 @@
-# from datetime import datetime
-# from sqlalchemy import Column, VARCHAR, ForeignKey
-# from sqlalchemy.ext.declarative import declarative_base
-#
-# Base = declarative_base()
-# #
-# # class Payment(Base):
-# #     __tablename__ = 'payment'
-# #
-# #     payid = Column(VARCHAR(30), primary_key=True, index=True)
-# #     payment = Column(VARCHAR(50), nullable=False)
-# #     paydate = Column(VARCHAR(30), nullable=False)
-# #     parkingtime = Column(VARCHAR(20), nullable=False)
-# #     carnum = Column(VARCHAR(50), nullable=False) #ForeignKey=('parking.carnum'))
-
 
 from datetime import datetime
 
@@ -36,6 +21,7 @@ class Parkseat(Base):
 
     carnum = Column(String(10), primary_key=True, nullable=False)
     barrier = Column(String(5), nullable=False, default='0')
+    parknum = Column(Integer, nullable=False)
 
 # 수정 필요
 class Payment(Base):

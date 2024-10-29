@@ -35,6 +35,7 @@ class ParkingList(BaseModel):
 class ParkseatBase(BaseModel):
     carnum: str
     barrier: bool
+    parknum: int
 
 
 class ParkseatList(BaseModel):
