@@ -35,7 +35,7 @@ def create_triggers():
 # parknum 랜덤 할당 함수
 def random_parknum(db: Session) -> int:
     existing_parknums = {row[0] for row in db.query(Parkseat.parknum).all()}  # 이미 저장되어있는 parknum 값을 따로 정의
-    return random.choice([num for num in range(1, 104) if num not in existing_parknums]) # 따로 정의 한 ▲ 값과 비교 한 후 없는 값을 지정
+    return random.choice([num for num in range(1, 101) if num not in existing_parknums]) # 따로 정의 한 ▲ 값과 비교 한 후 없는 값을 지정
 
 # 차량 등록
 def register(db: Session, parking_data: ParkingBase):

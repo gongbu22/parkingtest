@@ -1,4 +1,5 @@
-import config from '/config';
+import config from '../../../config.js';
+
 window.addEventListener('load', async () => {
     try {
         const availableSpots = await getAvailableSpots();
