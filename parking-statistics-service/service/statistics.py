@@ -1,42 +1,46 @@
 from sqlalchemy.orm import Session
-from schema.statistics import VisitorStatsBase, PaymentStatsBase
-from models.statistics import VisitorStats, PaymentStats
-from typing import List, Optional
+from sqlalchemy import extract, func
+from models.statistics import Payment
+from schema.statistics import StatisticsResponse
 
-# 방문자 통계 등록
-def register_visitor(db: Session, visitor: VisitorStatsBase) -> VisitorStats:
-    try:
-        visitor = VisitorStats(**visitor.model_dump())
-        db.add(visitor)
-        db.commit()
-        db.refresh(visitor)
-        return visitor
-    except Exception as e:
-        print(f"Error registering visitor: {e}")
-        db.rollback()
-        raise
+# 결제내역 조회
+def getpaymentlist(db: Session):
+    return db.query(Payment).all()
 
-# 요금 통계 등록
-def register_payment(db: Session, payment: PaymentStatsBase) -> PaymentStats:
-    try:
-        payment = PaymentStats(**payment.model_dump())
-        db.add(payment)
-        db.commit()
-        db.refresh(payment)
-        return payment
-    except Exception as e:
-        print(f"Error registering payment: {e}")
-        db.rollback()
-        raise
+# 통계 및 분석
+def get_monthly_payments(db: Session):
+    monthly_payments = [0] * 12
+    results = db.query(
+        extract('month', Payment.paydate).label('month'),
+        func.sum(Payment.payment).label('total_payment')
+    ).group_by('month').all()
 
-# 방문자 통계 목록 조회
-def visitor_list(db: Session) -> List[VisitorStats]:
-    return db.query(VisitorStats).all()
+    for month, total_payment in results:
+        monthly_payments[int(month) - 1] = total_payment
 
-# 요금 통계 목록 조회
-def payment_list(db: Session) -> List[PaymentStats]:
-    return db.query(PaymentStats).all()
+    return monthly_payments
 
-# 요금 통계 상세 조회
-def payment_one(db: Session, sno: int) -> Optional[PaymentStats]:
-    return db.query(PaymentStats).filter(PaymentStats.sno == sno).first()
+def get_monthly_visitors(db: Session):
+    monthly_visitors = [0] * 12
+
+    # 월별 방문자 수 집계
+    results = db.query(
+        extract('month', Payment.paydate).label('month'),
+        func.count(Payment.payid).label('count')
+    ).group_by('month').all()
+
+    # 결과를 monthly_visitors 리스트에 저장
+    for month, count in results:
+        monthly_visitors[int(month) - 1] = count  # month는 1부터 시작하므로 인덱스를 조정
+
+    return monthly_visitors
+
+
+def get_statistics(db: Session) -> StatisticsResponse:
+    monthly_payments = get_monthly_payments(db)
+    monthly_visitors = get_monthly_visitors(db)
+
+    visitordata = [{"month": str(i + 1), "visitor_count": count} for i, count in enumerate(monthly_visitors)]
+    paymentdata = [{"month": str(i + 1), "total_payment": total} for i, total in enumerate(monthly_payments)]
+
+    return StatisticsResponse(visitordata=visitordata, paymentdata=paymentdata)

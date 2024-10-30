@@ -1,38 +1,31 @@
+from datetime import datetime
+
 from pydantic import BaseModel
 from typing import List
 
-class VisitorStatsBase(BaseModel):
+# 결제내역
+class PaymentList(BaseModel):
+    payid: int
+    payment: str
+    paydate: datetime
+    parkingtime: str
+    carnum: str
+
+    class Config:
+        from_attributes = True
+        json_encoders = {
+            datetime: lambda v: v.strftime('%Y-%m-%d %H:%M:%S')  # 출력 시 포맷 지정
+        }
+
+# 통계 및 분석
+class VisitorStatistics(BaseModel):
     month: str
     visitor_count: int
 
-class VisitorStats(VisitorStatsBase):
-    sno: int
-
-    class Config:
-        from_attributes = True
-
-class PaymentStatsBase(BaseModel):
+class PaymentStatistics(BaseModel):
     month: str
-    total_fee: float  # 요금을 만원 단위로 저장
+    total_payment: float
 
-class PaymentStats(PaymentStatsBase):
-    sno: int
-
-    class Config:
-        from_attributes = True
-
-class PaymentList(BaseModel):
-    sno: int
-    carnum: str
-    payid: str
-    parkingtime: str
-
-    class Config:
-        from_attributes = True
-
-class Statistics(BaseModel):
-    visitors: List[VisitorStats]
-    payments: List[PaymentStats]
-
-    class Config:
-        from_attributes = True
+class StatisticsResponse(BaseModel):
+    visitordata: List[VisitorStatistics]
+    paymentdata: List[PaymentStatistics]
