@@ -29,7 +29,7 @@ def register(db: Session, parking_data: ParkingBase):
 
 
 def vehiclelist(db: Session):
-    return db.query(Parking.carnum, Parking.barrier, Parking.intime,
+    return db.query(Parking.carnum, Parking.barrier, Parking.intime, Parking.outtime,
                     Parking.pno).order_by(Parking.pno.desc()).all()
 
 

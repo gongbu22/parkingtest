@@ -19,7 +19,7 @@ const getAvailableSpots = async () => {
         const data = await res.json();
         console.log(data);
         return {
-            total_available_spots: data.total_available_spots || 103,
+            total_available_spots: data.total_available_spots || 100,
             used_spots: data.used_spots || 0
         };
     } else {
@@ -41,10 +41,10 @@ const displayAvailableSpots = (availableSpots) => {
     // HTML에 남은 자리 수와 사용 중인 자리 수 업데이트
     availableSpotsElement.innerHTML = `
         <div class="status-text" style="color:#ff6347">
-            <b>사용 중인 자리: ${usedSpots} / 100</b>
+            <b>사용 중인 자리: ${usedSpots}</b>
         </div>
         <div class="status-text" style="color:#32cd32">
-            <b>남은 자리: ${remainingSpots} / 100</b>
+            <b>남은 자리: ${remainingSpots}</b>
         </div>
     `;
 };

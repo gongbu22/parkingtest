@@ -12,7 +12,7 @@ from models.parking import Parkseat
 router = APIRouter()
 
 # 총 자리 수와 장애인용 자리 수 상수 정의
-TOTAL_SPOTS = 103
+TOTAL_SPOTS = 100
 DISABLED_SPOTS = 3
 
 
@@ -91,7 +91,7 @@ async def get_available_spots(db: Session = Depends(get_db)):
 
 @router.get("/status")
 def get_parking_status(db: Session = Depends(get_db)):
-    total_spots = 103  # 주차장의 총 자리 수
+    total_spots = 100  # 주차장의 총 자리 수
     used_spots_query = db.query(Parkseat.parknum).all()
 
     # 사용 중인 parknum 리스트 생성

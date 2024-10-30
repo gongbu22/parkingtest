@@ -25,6 +25,7 @@ class ParkingList(BaseModel):
     carnum: str
     barrier: bool
     intime: datetime
+    outtime: Optional[datetime]
 
     class Config:
         from_attributes=True

@@ -15,9 +15,8 @@ def create_triggers():
     # parkseat에 동일한 carnum 데이터 삭제
     trigger_sql_payment = """
     CREATE TRIGGER IF NOT EXISTS remove_parkseat
-    AFTER UPDATE ON payment
+    AFTER INSERT ON payment
     FOR EACH ROW
-    WHEN OLD.paydate IS NULL AND NEW.paydate IS NOT NULL
     BEGIN
         DELETE FROM parkseat WHERE carnum = NEW.carnum;
     END;
