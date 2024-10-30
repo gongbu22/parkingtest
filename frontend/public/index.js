@@ -43,5 +43,9 @@ router.get('/admin/statistics', function(req, res, next) {
   res.sendFile(__dirname + '/views/admin/statistics.html');
 });
 
+router.get('/config', function(req, res, next) {
+  res.sendFile(__dirname + '/config.js');
+});
+
 
 module.exports = router;

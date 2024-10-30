@@ -1,3 +1,4 @@
+import config from '/config';
 window.addEventListener('load', async () => {
     try {
         const availableSpots = await getAvailableSpots();
@@ -10,7 +11,7 @@ window.addEventListener('load', async () => {
 
 // 남은 자리 수 가져오기
 const getAvailableSpots = async () => {
-    let url = 'http://127.0.0.1:8002/available-spots';
+    let url = `${config.BACKEND3_URL}/available-spots`;
     const res = await fetch(url);
 
     if (res.ok) {
@@ -98,7 +99,7 @@ const displayParkingSpots = (availableSpots, usedParknums) => {
 
 // 서버에서 주차 현황 데이터를 가져오는 함수
 const getStatus = async () => {
-    const url = 'http://127.0.0.1:8002/status';
+    const url = `${config.BACKEND3_URL}/status`;
 
     try {
         const response = await fetch(url);

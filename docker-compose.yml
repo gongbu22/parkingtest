@@ -1,0 +1,60 @@
+---
+version: '3.8'
+services:
+  frontend:
+    build: ./frontend
+    environment:
+      - API_URL=${API_URL}
+      - BACKEND1_URL=${BACKEND1_URL}
+      - BACKEND2_URL=${BACKEND2_URL}
+      - BACKEND3_URL=${BACKEND3_URL}
+      - BACKEND4_URL=${BACKEND4_URL}
+    ports:
+      - "3000:3000"
+  backend1:
+    build: ./backend1
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8000
+    ports:
+      - "8000:8000"
+
+  backend2:
+    build: ./backend2
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8001
+    ports:
+      - "8001:8001"
+  mariadb:
+    image: mariadb:10.11.9
+    env_file:
+      - .env
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  jenkins:
+    image: jenkins/jenkins:lts
+    user: root
+    environment:
+      - JENKINS_OPTS=--prefix=/jenkins
+    volumes:
+      - jenkins_home:/var/jenkins_home
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+      - "50000:50000"
+  argocd:
+    image: argoproj/argocd:v2.4.7
+    ports:
+      - "8081:8081"
+    command: ["argocd-server", "--insecure"]
+  volumes:
+    mariadb_data:
+    jenkins_home:
