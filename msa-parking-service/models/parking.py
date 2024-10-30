@@ -27,24 +27,24 @@ class Parkseat(Base):
 class Payment(Base):
     __tablename__ = 'payment'
 
-    payid = Column(String(30), primary_key=True, index=True)
+    payid = Column(Integer, primary_key=True, autoincrement=True)
     payment = Column(String(50))
     paydate = Column(DateTime, nullable=True)
     parkingtime = Column(String(20), nullable=True)
     carnum = Column(String(10), ForeignKey('parking.carnum'))
 
-class VisitorStats(Base):
-    __tablename__ = 'visitor_stats'
-
-    sno = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    carnum = Column(String(10), nullable=False)
-    month = Column(String(10), nullable=False)
-    visitor_count = Column(Integer, nullable=False)
-
-
-class PaymentStats(Base):
-    __tablename__ = 'payment_stats'
-
-    sno = Column(Integer, primary_key=True, autoincrement=True, index=True)
-    month = Column(String(10), nullable=False)
-    total_fee = Column(Float, nullable=False)
+# class VisitorStats(Base):
+#     __tablename__ = 'visitor_stats'
+#
+#     sno = Column(Integer, primary_key=True, autoincrement=True, index=True)
+#     carnum = Column(String(10), nullable=False)
+#     month = Column(String(10), nullable=False)
+#     visitor_count = Column(Integer, nullable=False)
+#
+#
+# class PaymentStats(Base):
+#     __tablename__ = 'payment_stats'
+#
+#     sno = Column(Integer, primary_key=True, autoincrement=True, index=True)
+#     month = Column(String(10), nullable=False)
+#     total_fee = Column(Float, nullable=False)
