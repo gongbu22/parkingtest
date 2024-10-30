@@ -11,8 +11,16 @@ services:
       - BACKEND4_URL=${BACKEND4_URL}
     ports:
       - "3000:3000"
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+      - backend4
+    networks:
+      - parking-network
+
   backend1:
-    build: ./backend1
+    build: ./msa-parking-service
     env_file:
       - .env
     environment:
@@ -20,9 +28,13 @@ services:
       - PORT=8000
     ports:
       - "8000:8000"
+    depends_on:
+      - mariadb
+    networks:
+      - parking-network
 
   backend2:
-    build: ./backend2
+    build: ./msa-product-service
     env_file:
       - .env
     environment:
@@ -30,6 +42,39 @@ services:
       - PORT=8001
     ports:
       - "8001:8001"
+    depends_on:
+      - mariadb
+    networks:
+      - parking-network
+
+  backend3:
+    build: ./parking-payment-service
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8002
+    ports:
+      - "8002:8002"
+    depends_on:
+      - mariadb
+    networks:
+      - parking-network
+
+  backend4:
+    build: ./parking-statistics-service
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - PORT=8003
+    ports:
+      - "8003:8003"
+    depends_on:
+      - mariadb
+    networks:
+      - parking-network
+
   mariadb:
     image: mariadb:10.11.9
     env_file:
@@ -38,6 +83,8 @@ services:
       - mariadb_data:/var/lib/mysql
     ports:
       - "3306:3306"
+    networks:
+      - parking-network
 
   jenkins:
     image: jenkins/jenkins:lts
@@ -50,11 +97,20 @@ services:
     ports:
       - "8080:8080"
       - "50000:50000"
+    networks:
+      - parking-network
+
   argocd:
     image: argoproj/argocd:v2.4.7
     ports:
       - "8081:8081"
     command: ["argocd-server", "--insecure"]
-  volumes:
-    mariadb_data:
-    jenkins_home:
+    networks:
+      - parking-network
+
+volumes:
+  mariadb_data:
+  jenkins_home:
+
+networks:
+  parking-network:
