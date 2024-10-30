@@ -1,4 +1,4 @@
-import config from '../../../config.js';
+// import config from '../../../config.js';
 
 window.addEventListener('load', async () => {
     try {
@@ -12,7 +12,7 @@ window.addEventListener('load', async () => {
 
 // 남은 자리 수 가져오기
 const getAvailableSpots = async () => {
-    let url = `${config.BACKEND3_URL}/available-spots`;
+    let url = `http://127.0.0.1:8002/available-spots`;
     const res = await fetch(url);
 
     if (res.ok) {
@@ -41,10 +41,10 @@ const displayAvailableSpots = (availableSpots) => {
     // HTML에 남은 자리 수와 사용 중인 자리 수 업데이트
     availableSpotsElement.innerHTML = `
         <div class="status-text" style="color:#ff6347">
-            <b>사용 중인 자리: ${usedSpots} / 103</b>
+            <b>사용 중인 자리: ${usedSpots} / 100</b>
         </div>
         <div class="status-text" style="color:#32cd32">
-            <b>남은 자리: ${remainingSpots} / 103</b>
+            <b>남은 자리: ${remainingSpots} / 100</b>
         </div>
     `;
 };
@@ -100,7 +100,7 @@ const displayParkingSpots = (availableSpots, usedParknums) => {
 
 // 서버에서 주차 현황 데이터를 가져오는 함수
 const getStatus = async () => {
-    const url = `${config.BACKEND3_URL}/status`;
+    const url = `http://127.0.0.1:8002/status`;
 
     try {
         const response = await fetch(url);

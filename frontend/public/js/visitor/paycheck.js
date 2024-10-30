@@ -178,9 +178,10 @@ const processPayment = () => {
     }, function (rsp) {
         if (rsp.success) {
             alert('결제가 완료되었습니다.');
-            window.location.href = '/paycheck';
+            window.location.href = '/';
         } else {
             alert('결제가 완료되었습니다.');
+            window.location.href = '/';
         }
     });
 };
