@@ -3,6 +3,9 @@ version: '3.8'
 services:
   frontend:
     build: ./frontend
+    volumes:
+      - ./frontend:/usr/src/app
+    working_dir: /usr/src/app
     environment:
       - API_URL=${API_URL}
       - BACKEND1_URL=${BACKEND1_URL}
@@ -20,6 +23,7 @@ services:
       - parking-network
 
   backend1:
+    container_name: register
     build: ./msa-parking-service
     env_file:
       - .env
@@ -34,7 +38,8 @@ services:
       - parking-network
 
   backend2:
-    build: ./msa-product-service
+    container_name: payment
+    build: ./parking-payment-service
     env_file:
       - .env
     environment:
@@ -48,7 +53,8 @@ services:
       - parking-network
 
   backend3:
-    build: ./parking-payment-service
+    container_name: parking
+    build: ./msa-product-service
     env_file:
       - .env
     environment:
@@ -62,6 +68,7 @@ services:
       - parking-network
 
   backend4:
+    container_name: statistics
     build: ./parking-statistics-service
     env_file:
       - .env
@@ -76,7 +83,8 @@ services:
       - parking-network
 
   mariadb:
-    image: mariadb:10.11.9
+    container_name: mariadb
+    image: mariadb:10.11.9-jammy
     env_file:
       - .env
     volumes:
@@ -87,6 +95,7 @@ services:
       - parking-network
 
   jenkins:
+    container_name: jenkins
     image: jenkins/jenkins:lts
     user: root
     environment:
@@ -101,6 +110,7 @@ services:
       - parking-network
 
   argocd:
+    container_name: argocd
     image: argoproj/argocd:v2.4.7
     ports:
       - "8081:8081"
